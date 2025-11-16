@@ -1,0 +1,29 @@
+- name: Practica Ansible - Automatizacion con Docker (Nginx)
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Actualizar repositorios
+      apt:
+        update_cache: yes
+
+    - name: Instalar nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Copiar pagina web personalizada
+      copy:
+        src: site/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Asegurar que nginx este iniciado
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
